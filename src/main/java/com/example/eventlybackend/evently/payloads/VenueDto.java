@@ -12,6 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class VenueDto {
+
+    private  int id;
     private String venueName;
 
     private String place;
@@ -24,4 +26,6 @@ public class VenueDto {
 
     private List<FoodorServiceDto> foods = new ArrayList<>();
 
+
+    private int userId;
 }

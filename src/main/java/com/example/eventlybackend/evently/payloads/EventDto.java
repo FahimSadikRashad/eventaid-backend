@@ -10,6 +10,8 @@ import lombok.Setter;
 
 public class EventDto {
 
+    private int id;
+
     private String eventName;
 
     private int eventCost;

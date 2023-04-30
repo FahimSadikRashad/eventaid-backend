@@ -1,22 +1,18 @@
 package com.example.eventlybackend.evently.services.impl;
 
 import com.example.eventlybackend.evently.exception.ResourceNotFoundException;
-import com.example.eventlybackend.evently.model.Event;
-import com.example.eventlybackend.evently.model.FoodorService;
-import com.example.eventlybackend.evently.model.Venue;
-import com.example.eventlybackend.evently.payloads.EventDto;
-import com.example.eventlybackend.evently.payloads.FoodorServiceDto;
-import com.example.eventlybackend.evently.payloads.VenueDto;
-import com.example.eventlybackend.evently.payloads.VenueRequest;
-import com.example.eventlybackend.evently.repository.EventRepo;
-import com.example.eventlybackend.evently.repository.FoodorServiceRepo;
-import com.example.eventlybackend.evently.repository.VenueRepo;
+import com.example.eventlybackend.evently.model.*;
+import com.example.eventlybackend.evently.payloads.*;
+import com.example.eventlybackend.evently.repository.*;
 import com.example.eventlybackend.evently.services.VenueService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +21,15 @@ public class VenueServiceImpl implements VenueService {
     private VenueRepo venueRepo;
 
     @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
     private EventRepo eventRepo;
     @Autowired
     private FoodorServiceRepo foodorServiceRepo;
+
+    @Autowired
+    private BookingRepo bookingRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -44,7 +46,9 @@ public class VenueServiceImpl implements VenueService {
 
         VenueDto venueDto=venueRequest.getVenueDto();
         Venue venue=this.modelMapper.map(venueDto, Venue.class);
-
+        int uid=venueRequest.getUserId();
+        User user=this.userRepo.findById(uid).orElseThrow(()->new ResourceNotFoundException("User","id",uid));
+        venue.setUser(user);
 //        venue.setEvents(events);
 //        venue.setFoods(foodorServices);
         Venue savedVenue=this.venueRepo.save(venue);
@@ -78,5 +82,78 @@ public class VenueServiceImpl implements VenueService {
         List<VenueDto> venueDtos=venues.stream().map(venue -> this.modelMapper.map(venue,VenueDto.class)).collect(Collectors.toList());
         return venueDtos;
 
+    }
+
+    @Override
+    public void deleteVenue(int vid) {
+        this.venueRepo.deleteById(vid);
+    }
+
+    @Override
+    public List<String> getAllPlaces() {
+
+        return this.venueRepo.findDistinctPlaces();
+    }
+
+    @Override
+    public Boolean BookingCheck(BookingRequest bookingRequest) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        int cnt1=this.bookingRepo.getPreviousBookingsCount(bookingRequest.getStartDate().format(formatter));
+        int cnt2=this.bookingRepo.getBetweenBookingsCount(bookingRequest.getStartDate().format(formatter),bookingRequest.getEndDate().format(formatter));
+        int cnt3=this.bookingRepo.getFutureBookingsCount(bookingRequest.getEndDate().format(formatter));
+
+        if((cnt1+cnt2+cnt3)>0) return false;
+        else return  true;
+
+
+    }
+
+    @Override
+    public Booking createBooking(BookingRequest bookingRequest) {
+        User user=this.userRepo.findById(bookingRequest.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found","Id", bookingRequest.getUserId()));
+        Venue venue = this.venueRepo.findById(bookingRequest.getVenueId()).orElseThrow(() -> new ResourceNotFoundException("Venue not found","Id", bookingRequest.getVenueId()));
+        Event event = this.eventRepo.findById(bookingRequest.getEventId()).orElseThrow(() -> new ResourceNotFoundException("Event not found","Id", bookingRequest.getEventId()));
+        List<FoodorService> foods = this.foodorServiceRepo.findAllById(bookingRequest.getFoodIds());
+//        List<FoodorService> services = this.foodorServiceRepo.findAllById(bookingRequest.getServiceIds());
+
+        Booking booking = new Booking();
+        booking.setPlace(bookingRequest.getPlace());
+        booking.setGuests(bookingRequest.getGuests());
+        booking.setEventCost(bookingRequest.getEventCost());
+        booking.setFoodCost(bookingRequest.getFoodCost());
+        booking.setServiceCost(bookingRequest.getServiceCost());
+        booking.setTotalCost(bookingRequest.getTotalCost());
+        booking.setStartDate(bookingRequest.getStartDate());
+        booking.setEndDate(bookingRequest.getEndDate());
+        booking.setUser(user);
+        booking.setVenue(venue);
+        booking.setEvent(event);
+        Set<FoodorService> newFoods=new HashSet<>();
+        foods.stream().map((food)->{
+            return newFoods.add(food);
+        });
+        booking.setFood(newFoods);
+//        booking.setServices(services);
+
+        Booking savedBooking = this.bookingRepo.save(booking);
+        return savedBooking;
+    }
+
+    @Override
+    public List<Booking> getBookingByUser(int uid) {
+        User user=this.userRepo.findById(uid).orElseThrow(() -> new ResourceNotFoundException("User not found","Id",uid));
+        List<Booking> bookings=this.bookingRepo.findByUser(user);
+        return bookings;
+    }
+
+    @Override
+    public Booking getBookingById(int bid) {
+
+        return this.bookingRepo.findById(bid).orElseThrow(() -> new ResourceNotFoundException("booking not found","Id",bid));
+    }
+
+    @Override
+    public void deleteBookingById(int bid) {
+        this.bookingRepo.deleteById(bid);
     }
 }

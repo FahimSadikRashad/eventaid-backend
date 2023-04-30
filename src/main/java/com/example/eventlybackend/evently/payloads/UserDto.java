@@ -1,10 +1,14 @@
 package com.example.eventlybackend.evently.payloads;
 
+import com.example.eventlybackend.evently.model.Venue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +28,7 @@ public class UserDto {
     private String password;
     @NotEmpty
     private String role;
+
+    private List<VenueDto> venues = new ArrayList<>();
 
 }

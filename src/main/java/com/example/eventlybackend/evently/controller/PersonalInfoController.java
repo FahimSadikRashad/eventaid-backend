@@ -3,7 +3,7 @@ package com.example.eventlybackend.evently.controller;
 import com.example.eventlybackend.evently.payloads.PersonalInfoDto;
 
 import com.example.eventlybackend.evently.services.PersonalInfoService;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

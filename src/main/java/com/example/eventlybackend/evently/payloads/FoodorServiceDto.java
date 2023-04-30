@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FoodorServiceDto {
 
-
+    private int id;
     private String serviceName;
 
     private int serviceCost;

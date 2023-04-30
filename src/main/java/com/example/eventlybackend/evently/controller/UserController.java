@@ -58,6 +58,9 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> registerUser(@RequestBody UserDto user) {
         System.out.println(user.getName());
+        if(user.getName()==null & user.getPassword()==null &  user.getRole()==null & user.getEmail()==null){
+            return new  ResponseEntity<ApiResponse>(new ApiResponse("Can't process null value",false),HttpStatus.OK);
+        }
         if (userService.getUserByUsername(user.getName()) != null) {
             return new  ResponseEntity<ApiResponse>(new ApiResponse("Username already exists",false),HttpStatus.OK);
         }

@@ -10,6 +10,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class VenueRequest {
+
+    private int userId;
     private VenueDto venueDto;
     private List<EventDto> eventDtoList;
     private List<FoodorServiceDto> foodorServicesList;

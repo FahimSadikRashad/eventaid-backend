@@ -31,6 +31,10 @@ public class Venue {
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoodorService> foods = new ArrayList<>();
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     public Venue(String name, String place, String contact) {
         this.venueName = name;
         this.place = place;
