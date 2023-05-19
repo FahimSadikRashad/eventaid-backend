@@ -1,6 +1,7 @@
 package com.example.eventlybackend.evently.payloads;
 
 
+import com.example.eventlybackend.evently.model.Booking;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class VenueDto {
 
 
     private List<FoodorServiceDto> foods = new ArrayList<>();
-
+    private List<Booking> booking=new ArrayList<>();
 
     private int userId;
 }

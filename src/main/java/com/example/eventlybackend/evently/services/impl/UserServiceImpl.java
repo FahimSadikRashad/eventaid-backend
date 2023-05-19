@@ -1,6 +1,9 @@
 package com.example.eventlybackend.evently.services.impl;
 
 import com.example.eventlybackend.evently.exception.ResourceNotFoundException;
+import com.example.eventlybackend.evently.model.Booking;
+import com.example.eventlybackend.evently.payloads.BookingDto;
+import com.example.eventlybackend.evently.repository.BookingRepo;
 import com.example.eventlybackend.evently.services.UserService;
 import com.example.eventlybackend.evently.model.User;
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private BookingRepo bookingRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -75,9 +81,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserByUsername(String username) {
         User user=this.userRepo.findUserByName(username);
-//        User user=users.get(0);
+
+        List<Booking> bookings=this.bookingRepo.findByUser(user);
         if(user==null) return null;
-        else return this.userToDto(user);
+        else {
+            UserDto userDto =this.userToDto(user);
+
+            return userDto;
+        }
 
     }
 

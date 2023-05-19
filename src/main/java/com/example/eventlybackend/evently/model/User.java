@@ -30,4 +30,5 @@ public class User {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Venue> venues = new ArrayList<>();
 
+
 }

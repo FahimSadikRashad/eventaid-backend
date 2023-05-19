@@ -1,10 +1,7 @@
 package com.example.eventlybackend.evently.controller;
 
 import com.example.eventlybackend.evently.model.Booking;
-import com.example.eventlybackend.evently.payloads.ApiResponse;
-import com.example.eventlybackend.evently.payloads.BookingRequest;
-import com.example.eventlybackend.evently.payloads.VenueDto;
-import com.example.eventlybackend.evently.payloads.VenueRequest;
+import com.example.eventlybackend.evently.payloads.*;
 import com.example.eventlybackend.evently.services.VenueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,14 +51,14 @@ public class VenueController {
 
     @PostMapping("/bookings")
     public ResponseEntity<ApiResponse> saveBooking(@RequestBody BookingRequest bookingRequest) {
-        if(!this.venueService.BookingCheck(bookingRequest)){
-            return new ResponseEntity<>(new ApiResponse("Booked date filed",false),HttpStatus.OK);
-        }
-        else{
+//        if(!this.venueService.BookingCheck(bookingRequest)){
+//            return new ResponseEntity<>(new ApiResponse("Booked date filed",false),HttpStatus.OK);
+//        }
+//        else{
             Booking booking=this.venueService.createBooking(bookingRequest);
             System.out.println(booking);
             return new ResponseEntity<>(new ApiResponse("Booked done",true),HttpStatus.OK);
-        }
+//        }
     }
     @GetMapping("/bookings/user/{uid}")
     public  List<Booking> getUserBookings(@PathVariable("uid") int uid){
@@ -77,4 +74,14 @@ public class VenueController {
     public  void deleteBookingById(@PathVariable("bid") int bid){
          this.venueService.deleteBookingById(bid);
     }
+
+    @GetMapping("/bookings/username/{userName}")
+    public ResponseEntity<List<Booking>> getNewUser(@PathVariable String userName) {
+        return ResponseEntity.ok(this.venueService.getBookingByUserName(userName));
+    }
+    @GetMapping("/bookings/venue/{vid}")
+    public ResponseEntity<List<Booking>> getVenueBookings(@PathVariable int vid) {
+        return ResponseEntity.ok(this.venueService.getBookingByVenueId(vid));
+    }
+
 }

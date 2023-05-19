@@ -1,5 +1,6 @@
 package com.example.eventlybackend.evently.payloads;
 
+import com.example.eventlybackend.evently.model.Booking;
 import com.example.eventlybackend.evently.model.Venue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,5 +31,7 @@ public class UserDto {
     private String role;
 
     private List<VenueDto> venues = new ArrayList<>();
+
+
 
 }

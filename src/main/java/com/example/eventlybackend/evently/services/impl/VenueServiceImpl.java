@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,6 +73,8 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public List<VenueDto> getAllVenues() {
         List<Venue> venues=this.venueRepo.findAll();
+        List<Booking> bookings=this.bookingRepo.findByVenue(venues.get(0));
+        System.out.println(bookings.get(0).getPlace());
         List<VenueDto> venueDtos=venues.stream().map(venue -> this.modelMapper.map(venue,VenueDto.class)).collect(Collectors.toList());
         return venueDtos;
     }
@@ -113,7 +116,17 @@ public class VenueServiceImpl implements VenueService {
         User user=this.userRepo.findById(bookingRequest.getUserId()).orElseThrow(() -> new ResourceNotFoundException("User not found","Id", bookingRequest.getUserId()));
         Venue venue = this.venueRepo.findById(bookingRequest.getVenueId()).orElseThrow(() -> new ResourceNotFoundException("Venue not found","Id", bookingRequest.getVenueId()));
         Event event = this.eventRepo.findById(bookingRequest.getEventId()).orElseThrow(() -> new ResourceNotFoundException("Event not found","Id", bookingRequest.getEventId()));
-        List<FoodorService> foods = this.foodorServiceRepo.findAllById(bookingRequest.getFoodIds());
+//        List<FoodorService> foods = this.foodorServiceRepo.findAllById(bookingRequest.getFoodIds()).stream().toList();
+        List<FoodorService> foods=new ArrayList<>();
+        Set<FoodorService> newFoods=new HashSet<>();
+        for(Integer id:bookingRequest.getServiceIds()){
+
+            FoodorService foodorService=this.foodorServiceRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Food not found","Id",id));
+            System.out.println(id+"   "+foodorService.getServiceName());
+
+            foods.add(foodorService);
+            newFoods.add(foodorService);
+        }
 //        List<FoodorService> services = this.foodorServiceRepo.findAllById(bookingRequest.getServiceIds());
 
         Booking booking = new Booking();
@@ -128,10 +141,11 @@ public class VenueServiceImpl implements VenueService {
         booking.setUser(user);
         booking.setVenue(venue);
         booking.setEvent(event);
-        Set<FoodorService> newFoods=new HashSet<>();
-        foods.stream().map((food)->{
-            return newFoods.add(food);
-        });
+
+//        foods.stream().map((food)->{
+//
+//            return newFoods.add(food);
+//        });
         booking.setFood(newFoods);
 //        booking.setServices(services);
 
@@ -155,5 +169,27 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public void deleteBookingById(int bid) {
         this.bookingRepo.deleteById(bid);
+    }
+
+    @Override
+    public List<Booking> getBookingByUserName(String username) {
+
+        User user=this.userRepo.findUserByName(username);
+        System.out.println(user.getName());
+
+        List<Booking> bookings=this.bookingRepo.findByUser(user);
+
+        return bookings;
+    }
+
+    @Override
+    public List<Booking> getBookingByVenueId(int vid) {
+
+        Venue venue=this.venueRepo.findById(vid).orElseThrow(() -> new ResourceNotFoundException("Venue not found","Id",vid));
+//        System.out.println(user.getName());
+
+        List<Booking> bookings=this.bookingRepo.findByVenue(venue);
+
+        return bookings;
     }
 }

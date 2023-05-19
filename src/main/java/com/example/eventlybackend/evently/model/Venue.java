@@ -1,5 +1,6 @@
 package com.example.eventlybackend.evently.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +25,17 @@ public class Venue {
     private String place;
 
     private String contact;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FoodorService> foods = new ArrayList<>();
+
+//
+    @JsonManagedReference
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<Booking> bookings=new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)

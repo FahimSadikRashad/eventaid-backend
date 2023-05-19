@@ -23,6 +23,9 @@ public interface VenueService {
     //delete an event based on id
     //delete a food or Service based on id
 
+    List<Booking> getBookingByUserName(String username);
+    List<Booking> getBookingByVenueId(int vid);
+
     Boolean BookingCheck(BookingRequest bookingRequest);
 
     Booking createBooking(BookingRequest bookingRequest);
@@ -31,4 +34,6 @@ public interface VenueService {
     Booking getBookingById(int bid);
 
     void deleteBookingById(int bid);
+
+
 }

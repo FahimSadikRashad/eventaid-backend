@@ -2,6 +2,7 @@ package com.example.eventlybackend.evently.repository;
 
 import com.example.eventlybackend.evently.model.Booking;
 import com.example.eventlybackend.evently.model.User;
+import com.example.eventlybackend.evently.model.Venue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,4 +20,6 @@ public interface BookingRepo extends JpaRepository<Booking, Integer> {
     int getFutureBookingsCount(String endDate);
 
     List<Booking> findByUser(User user);
+
+    List<Booking> findByVenue(Venue venue);
 }

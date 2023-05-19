@@ -1,5 +1,7 @@
 package com.example.eventlybackend.evently.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,16 +26,20 @@ public class Booking {
 
     private String place;
 
+    @JsonIgnoreProperties({"events", "foods", "bookings","user"})
     @ManyToOne
     @JoinColumn(name = "venue_id", referencedColumnName = "id")
     private Venue venue;
+//    @JsonBackReference
 
+    @JsonIgnoreProperties({"venue"})
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
 
     private Integer guests;
-
+//    @JsonBackReference
+    @JsonIgnoreProperties({"venue"})
     @ManyToMany
     @JoinTable(name = "booking_foods",
             joinColumns = {@JoinColumn(name = "booking_id")},
@@ -49,7 +55,9 @@ public class Booking {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToOne
+    @JsonIgnoreProperties({"venues"})
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
