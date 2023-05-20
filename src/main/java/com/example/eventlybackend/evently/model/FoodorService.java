@@ -22,6 +22,10 @@ public class FoodorService {
     private String serviceName;
 
     private int serviceCost;
+
+    @Column(columnDefinition = "varchar(255) default 'food'")
+    private String what;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id", nullable = false)

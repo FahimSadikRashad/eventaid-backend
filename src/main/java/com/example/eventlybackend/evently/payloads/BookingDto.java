@@ -30,6 +30,9 @@ public class BookingDto {
     private Integer guests;
 //    private Set<FoodorService> food;
 
+    private LocalDate current_date;
+
+    private String status;
 
     private int eventCost;
     private int foodCost;

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,11 +42,12 @@ public class VenueServiceImpl implements VenueService {
         List<FoodorService> foodorServices = foodorServiceDtos.stream().map(foodorServiceDto -> this.modelMapper.map(foodorServiceDto,FoodorService.class)).collect(Collectors.toList());
 
 
-        VenueDto venueDto=venueRequest.getVenueDto();
+        VenueDtoSave venueDto=venueRequest.getVenueDto();
         Venue venue=this.modelMapper.map(venueDto, Venue.class);
         int uid=venueRequest.getUserId();
         User user=this.userRepo.findById(uid).orElseThrow(()->new ResourceNotFoundException("User","id",uid));
         venue.setUser(user);
+
 //        venue.setEvents(events);
 //        venue.setFoods(foodorServices);
         Venue savedVenue=this.venueRepo.save(venue);
@@ -61,6 +59,7 @@ public class VenueServiceImpl implements VenueService {
             foodorService.setVenue(savedVenue);
             this.foodorServiceRepo.save(foodorService);
         }
+
         return this.modelMapper.map(savedVenue,VenueDto.class);
     }
 
@@ -73,8 +72,8 @@ public class VenueServiceImpl implements VenueService {
     @Override
     public List<VenueDto> getAllVenues() {
         List<Venue> venues=this.venueRepo.findAll();
-        List<Booking> bookings=this.bookingRepo.findByVenue(venues.get(0));
-        System.out.println(bookings.get(0).getPlace());
+//        List<Booking> bookings=this.bookingRepo.findByVenue(venues.get(0));
+//        System.out.println(bookings.get(0).getPlace());
         List<VenueDto> venueDtos=venues.stream().map(venue -> this.modelMapper.map(venue,VenueDto.class)).collect(Collectors.toList());
         return venueDtos;
     }
@@ -85,6 +84,20 @@ public class VenueServiceImpl implements VenueService {
         List<VenueDto> venueDtos=venues.stream().map(venue -> this.modelMapper.map(venue,VenueDto.class)).collect(Collectors.toList());
         return venueDtos;
 
+    }
+    @Override
+    public List<VenueDto> getVenuesByUsername(String username) {
+        User user = this.userRepo.findUserByName(username);
+        List<Venue> venues=this.venueRepo.findByUser(user);
+        if (user == null) {
+            return Collections.emptyList();
+        } else {
+            List<VenueDto> venueDtos = new ArrayList<>();
+            for (Venue venue : venues) {
+                venueDtos.add(this.modelMapper.map(venue,VenueDto.class));
+            }
+            return venueDtos;
+        }
     }
 
     @Override
@@ -141,6 +154,8 @@ public class VenueServiceImpl implements VenueService {
         booking.setUser(user);
         booking.setVenue(venue);
         booking.setEvent(event);
+        System.out.println("Prinitng the status:"+booking.getStatus());
+        booking.setStatus(bookingRequest.getStatus());
 
 //        foods.stream().map((food)->{
 //

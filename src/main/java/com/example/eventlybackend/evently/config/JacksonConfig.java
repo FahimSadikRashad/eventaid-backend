@@ -11,6 +11,7 @@ public class JacksonConfig {
     public Jackson2ObjectMapperBuilder jacksonBuilder() {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+//        builder.featuresToDisable(SerializationFeature.);
         return builder;
     }
 }

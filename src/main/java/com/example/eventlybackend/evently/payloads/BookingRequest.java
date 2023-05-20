@@ -1,5 +1,6 @@
 package com.example.eventlybackend.evently.payloads;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,5 +27,8 @@ public class BookingRequest {
     private LocalDate startDate;
     private LocalDate endDate;
 
+//    private LocalDate current_date;
+
+    private String status;
     // getters and setters
 }

@@ -55,6 +55,12 @@ public class Booking {
     private LocalDate startDate;
     private LocalDate endDate;
 
+//    @Column( columnDefinition = "DATE DEFAULT CURRENT_TIMESTAMP")
+//    private LocalDate current_date;
+
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'pending'")
+    private String status;
+
     @JsonIgnoreProperties({"venues"})
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

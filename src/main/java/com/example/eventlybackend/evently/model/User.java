@@ -1,6 +1,7 @@
 package com.example.eventlybackend.evently.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class User {
     private String role;
 
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonIgnoreProperties({"user","bookings"})
     private List<Venue> venues = new ArrayList<>();

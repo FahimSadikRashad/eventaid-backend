@@ -36,7 +36,10 @@ public class VenueController {
     public List<VenueDto> getAllVenuesByName(@PathVariable("vName") String venueName){
         return this.venueService.getVenueByName(venueName);
     }
-
+    @GetMapping("/username/{userName}")
+    public ResponseEntity<List<VenueDto>> getVenueByUserName(@PathVariable String userName) {
+        return ResponseEntity.ok(this.venueService.getVenuesByUsername(userName));
+    }
     @DeleteMapping("/del/{vid}")
     public ResponseEntity<ApiResponse> deleteVenue(@PathVariable("vid") int vid){
         this.venueService.deleteVenue(vid);
@@ -55,6 +58,7 @@ public class VenueController {
 //            return new ResponseEntity<>(new ApiResponse("Booked date filed",false),HttpStatus.OK);
 //        }
 //        else{
+        System.out.println(bookingRequest.getStatus());
             Booking booking=this.venueService.createBooking(bookingRequest);
             System.out.println(booking);
             return new ResponseEntity<>(new ApiResponse("Booked done",true),HttpStatus.OK);

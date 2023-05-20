@@ -26,6 +26,8 @@ public interface VenueService {
     List<Booking> getBookingByUserName(String username);
     List<Booking> getBookingByVenueId(int vid);
 
+    List<VenueDto> getVenuesByUsername(String username);
+
     Boolean BookingCheck(BookingRequest bookingRequest);
 
     Booking createBooking(BookingRequest bookingRequest);

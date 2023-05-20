@@ -15,4 +15,6 @@ public class FoodorServiceDto {
 
     private int serviceCost;
 
+    private String what;
+
 }

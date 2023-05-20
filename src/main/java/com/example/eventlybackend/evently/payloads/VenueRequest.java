@@ -12,7 +12,7 @@ import java.util.List;
 public class VenueRequest {
 
     private int userId;
-    private VenueDto venueDto;
+    private VenueDtoSave venueDto;
     private List<EventDto> eventDtoList;
     private List<FoodorServiceDto> foodorServicesList;
 }
