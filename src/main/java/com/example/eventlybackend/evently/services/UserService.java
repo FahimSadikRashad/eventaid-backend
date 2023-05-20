@@ -1,6 +1,7 @@
 package com.example.eventlybackend.evently.services;
 
 
+import com.example.eventlybackend.evently.payloads.LoginDto;
 import com.example.eventlybackend.evently.payloads.UserDto;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public interface UserService {
     void deleteUser(Integer userId);
 
 
-    void registerUser(UserDto userDto);
+    void registerUser(LoginDto userDto);
     UserDto getUserByUsername(String username);
 
+    LoginDto getUserByUsernameLogin(String username);
 }

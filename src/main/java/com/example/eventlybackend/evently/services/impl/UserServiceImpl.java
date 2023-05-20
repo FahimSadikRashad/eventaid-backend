@@ -3,6 +3,7 @@ package com.example.eventlybackend.evently.services.impl;
 import com.example.eventlybackend.evently.exception.ResourceNotFoundException;
 import com.example.eventlybackend.evently.model.Booking;
 import com.example.eventlybackend.evently.payloads.BookingDto;
+import com.example.eventlybackend.evently.payloads.LoginDto;
 import com.example.eventlybackend.evently.repository.BookingRepo;
 import com.example.eventlybackend.evently.services.UserService;
 import com.example.eventlybackend.evently.model.User;
@@ -73,8 +74,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserDto userDto) {
-        User user=this.dtoToUser(userDto);
+    public void registerUser(LoginDto userDto) {
+        User user=this.modelMapper.map(userDto, User.class);
         this.userRepo.save(user);
     }
 
@@ -82,10 +83,24 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByUsername(String username) {
         User user=this.userRepo.findUserByName(username);
 
-        List<Booking> bookings=this.bookingRepo.findByUser(user);
+//        List<Booking> bookings=this.bookingRepo.findByUser(user);
         if(user==null) return null;
         else {
             UserDto userDto =this.userToDto(user);
+
+            return userDto;
+        }
+
+    }
+
+    @Override
+    public LoginDto getUserByUsernameLogin(String username) {
+        User user=this.userRepo.findUserByName(username);
+
+
+        if(user==null) return null;
+        else {
+            LoginDto userDto =this.modelMapper.map(user, LoginDto.class);
 
             return userDto;
         }

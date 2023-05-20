@@ -2,6 +2,7 @@ package com.example.eventlybackend.evently.controller;
 
 
 import com.example.eventlybackend.evently.payloads.ApiResponse;
+import com.example.eventlybackend.evently.payloads.LoginDto;
 import com.example.eventlybackend.evently.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> registerUser(@RequestBody UserDto user) {
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody LoginDto user) {
         System.out.println(user.getName());
         if(user.getName()==null & user.getPassword()==null &  user.getRole()==null & user.getEmail()==null){
             return new  ResponseEntity<ApiResponse>(new ApiResponse("Can't process null value",false),HttpStatus.OK);
@@ -69,8 +70,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> loginUser(@RequestBody UserDto user) {
-        UserDto existingUser = userService.getUserByUsername(user.getName());
+    public ResponseEntity<ApiResponse> loginUser(@RequestBody LoginDto user) {
+        LoginDto existingUser = userService.getUserByUsernameLogin(user.getName());
         if (existingUser == null || !existingUser.getPassword().equals(user.getPassword())) {
             return new  ResponseEntity<ApiResponse>(new ApiResponse("Invalid username or password",false),HttpStatus.OK);
         }

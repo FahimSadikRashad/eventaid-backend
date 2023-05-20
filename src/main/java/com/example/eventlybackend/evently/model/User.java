@@ -1,5 +1,6 @@
 package com.example.eventlybackend.evently.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonIgnoreProperties({"user","bookings"})
     private List<Venue> venues = new ArrayList<>();
 
 
