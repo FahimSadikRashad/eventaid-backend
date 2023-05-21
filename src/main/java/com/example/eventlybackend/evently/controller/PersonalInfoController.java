@@ -17,6 +17,7 @@ public class PersonalInfoController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<PersonalInfoDto> updateUser( @RequestBody PersonalInfoDto personalInfoDto, @PathVariable("userId") Integer uid) {
+        System.out.println(personalInfoDto.getLastname());
         PersonalInfoDto updatedPersonalInfo = this.personalInfoService.updateUserProfile(personalInfoDto, uid);
         return ResponseEntity.ok(updatedPersonalInfo);
     }

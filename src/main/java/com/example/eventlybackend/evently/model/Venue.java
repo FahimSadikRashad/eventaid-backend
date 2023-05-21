@@ -30,10 +30,10 @@ public class Venue {
 
     private String contact;
     @JsonManagedReference
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();
     @JsonManagedReference
-    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL)
     private List<FoodorService> foods = new ArrayList<>();
 
 //

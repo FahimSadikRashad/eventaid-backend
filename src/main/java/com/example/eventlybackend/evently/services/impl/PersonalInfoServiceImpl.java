@@ -34,11 +34,11 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
 
             personalInfo.setUser(user);
             personalInfo.setFirstname(personalInfoDto.getFirstname());
-            personalInfo.setLastname(personalInfo.getLastname());
-            personalInfo.setEmail(personalInfo.getEmail());
-            personalInfo.setGender(personalInfo.getGender());
-            personalInfo.setPhone(personalInfo.getPhone());
-            personalInfo.setAddress(personalInfo.getAddress());
+            personalInfo.setLastname(personalInfoDto.getLastname());
+            personalInfo.setEmail(personalInfoDto.getEmail());
+            personalInfo.setGender(personalInfoDto.getGender());
+            personalInfo.setPhone(personalInfoDto.getPhone());
+            personalInfo.setAddress(personalInfoDto.getAddress());
 
         }
             PersonalInfo savedInfo=this.personalInfoRepo.save(personalInfo);

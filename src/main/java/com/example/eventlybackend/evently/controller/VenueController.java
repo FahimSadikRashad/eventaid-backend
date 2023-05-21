@@ -24,6 +24,14 @@ public class VenueController {
         // Return the created event
         return venueDto;
     }
+    @PostMapping("/events/{vid}")
+    public VenueDto updateEvent(@PathVariable("vid") int vid,@RequestBody VenueRequest request) {
+
+        // Your code to save the entities to database
+        VenueDto venueDto=this.venueService.updateVenue(request,vid);
+        // Return the created event
+        return venueDto;
+    }
     @GetMapping("/{vid}")
     public VenueDto getVenueById(@PathVariable("vid") int vid){
         return this.venueService.getVenueById(vid);

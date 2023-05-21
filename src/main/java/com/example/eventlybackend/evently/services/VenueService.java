@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface VenueService {
     VenueDto createVenue(VenueRequest venueRequest);
+
+    VenueDto updateVenue(VenueRequest venueRequest,int vid);
     VenueDto getVenueById(Integer vid);
 
     List<VenueDto> getAllVenues();

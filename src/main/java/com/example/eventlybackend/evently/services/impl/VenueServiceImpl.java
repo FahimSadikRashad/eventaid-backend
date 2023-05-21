@@ -8,6 +8,7 @@ import com.example.eventlybackend.evently.services.VenueService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -101,8 +102,28 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
+    @Transactional
     public void deleteVenue(int vid) {
-        this.venueRepo.deleteById(vid);
+        Venue venue = this.venueRepo.findById(vid).orElse(null);
+        List<Event> events=venue.getEvents();
+        List<FoodorService> foodorServices=venue.getFoods();
+
+        this.bookingRepo.deleteBookingByVenue(venue);
+        if(events!=null){
+            for(int i=0;i<events.size();i++){
+                this.eventRepo.delete(events.get(i));
+            }
+        }
+
+        if(foodorServices!=null){
+            for(int i=0;i<foodorServices.size();i++){
+                this.foodorServiceRepo.delete(foodorServices.get(i));
+            }
+        }
+
+        if (venue != null) {
+            this.venueRepo.delete(venue);
+        }
     }
 
     @Override
@@ -206,5 +227,61 @@ public class VenueServiceImpl implements VenueService {
         List<Booking> bookings=this.bookingRepo.findByVenue(venue);
 
         return bookings;
+    }
+
+    @Override
+    public VenueDto updateVenue(VenueRequest venueRequest,int vid) {
+
+        Venue venue = this.venueRepo.findById(vid).orElse(null);
+        List<EventDto> eventDtoList=venueRequest.getEventDtoList();
+        List<Event> newEvents = eventDtoList.stream().map(eventDto -> this.modelMapper.map(eventDto,Event.class)).collect(Collectors.toList());
+
+        List<FoodorServiceDto> foodorServiceDtos=venueRequest.getFoodorServicesList();
+        List<FoodorService> newFoodorServices = foodorServiceDtos.stream().map(foodorServiceDto -> this.modelMapper.map(foodorServiceDto,FoodorService.class)).collect(Collectors.toList());
+
+
+        VenueDtoSave venueDto=venueRequest.getVenueDto();
+        Venue newVenue=this.modelMapper.map(venueDto, Venue.class);
+        venue.setVenueName(newVenue.getVenueName());
+        venue.setPlace(newVenue.getPlace());
+        venue.setContact(newVenue.getContact());
+
+
+
+
+
+        Venue savedVenue=this.venueRepo.save(venue);
+        for(Event event:newEvents){
+            Event prevEvent=this.eventRepo.findById(event.getId()).orElse(null);
+            if(prevEvent!=null){
+                prevEvent.setEventName(event.getEventName());
+                prevEvent.setEventCost(event.getEventCost());
+
+            }
+            else{
+                prevEvent.setEventName(event.getEventName());
+                prevEvent.setEventCost(event.getEventCost());
+                prevEvent.setVenue(venue);
+            }
+            this.eventRepo.save(prevEvent);
+        }
+        for(FoodorService foodorService:newFoodorServices){
+            FoodorService prevFood=this.foodorServiceRepo.findById(foodorService.getId()).orElse(null);
+            if(prevFood!=null){
+                prevFood.setServiceName(foodorService.getServiceName());
+                prevFood.setServiceCost(foodorService.getServiceCost());
+                prevFood.setWhat(foodorService.getWhat());
+
+            }
+            else{
+                prevFood.setServiceName(foodorService.getServiceName());
+                prevFood.setServiceCost(prevFood.getServiceCost());
+                prevFood.setWhat(foodorService.getWhat());
+                prevFood.setVenue(venue);
+            }
+            this.foodorServiceRepo.save(prevFood);
+        }
+
+        return this.modelMapper.map(savedVenue,VenueDto.class);
     }
 }

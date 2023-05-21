@@ -22,4 +22,6 @@ public interface BookingRepo extends JpaRepository<Booking, Integer> {
     List<Booking> findByUser(User user);
 
     List<Booking> findByVenue(Venue venue);
+
+    void deleteBookingByVenue(Venue venue);
 }
