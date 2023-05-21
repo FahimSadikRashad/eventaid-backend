@@ -161,6 +161,14 @@ public class VenueServiceImpl implements VenueService {
             foods.add(foodorService);
             newFoods.add(foodorService);
         }
+        for(Integer id:bookingRequest.getFoodIds()){
+
+            FoodorService foodorService=this.foodorServiceRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Food not found","Id",id));
+            System.out.println(id+"   "+foodorService.getServiceName());
+
+            foods.add(foodorService);
+            newFoods.add(foodorService);
+        }
 //        List<FoodorService> services = this.foodorServiceRepo.findAllById(bookingRequest.getServiceIds());
 
         Booking booking = new Booking();
