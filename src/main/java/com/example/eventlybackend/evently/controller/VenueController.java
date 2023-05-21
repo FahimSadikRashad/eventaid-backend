@@ -63,15 +63,15 @@ public class VenueController {
 
     @PostMapping("/bookings")
     public ResponseEntity<ApiResponse> saveBooking(@RequestBody BookingRequest bookingRequest) {
-//        if(!this.venueService.BookingCheck(bookingRequest)){
-//            return new ResponseEntity<>(new ApiResponse("Booked date filed",false),HttpStatus.OK);
-//        }
-//        else{
+        if(!this.venueService.BookingCheck(bookingRequest)){
+            return new ResponseEntity<>(new ApiResponse("Booked date filled",false),HttpStatus.OK);
+        }
+        else{
         System.out.println(bookingRequest.getStatus());
             Booking booking=this.venueService.createBooking(bookingRequest);
             System.out.println(booking);
             return new ResponseEntity<>(new ApiResponse("Booked done",true),HttpStatus.OK);
-//        }
+        }
     }
     @GetMapping("/bookings/user/{uid}")
     public  List<Booking> getUserBookings(@PathVariable("uid") int uid){

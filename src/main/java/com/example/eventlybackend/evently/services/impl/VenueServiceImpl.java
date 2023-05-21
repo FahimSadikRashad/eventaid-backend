@@ -138,7 +138,7 @@ public class VenueServiceImpl implements VenueService {
         int cnt1=this.bookingRepo.getPreviousBookingsCount(bookingRequest.getStartDate().format(formatter));
         int cnt2=this.bookingRepo.getBetweenBookingsCount(bookingRequest.getStartDate().format(formatter),bookingRequest.getEndDate().format(formatter));
         int cnt3=this.bookingRepo.getFutureBookingsCount(bookingRequest.getEndDate().format(formatter));
-
+        System.out.println("The counts"+cnt2+" "+cnt1+" "+cnt3);
         if((cnt1+cnt2+cnt3)>0) return false;
         else return  true;
 
