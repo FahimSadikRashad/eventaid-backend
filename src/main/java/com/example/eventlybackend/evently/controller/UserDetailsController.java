@@ -6,6 +6,11 @@ import com.example.eventlybackend.evently.model.UserDetails;
 import com.example.eventlybackend.evently.repository.UserDetailsRepo;
 import com.example.eventlybackend.evently.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/userDetails")
+    @RequestMapping("/api/userDetails")
 @CrossOrigin("http://localhost:3000")
 public class UserDetailsController {
 
@@ -57,8 +62,13 @@ public class UserDetailsController {
                                   @RequestParam("file") MultipartFile file) throws IOException {
         // process the form data and file here
         // ...
-        UserDetails personalInformation=new UserDetails();
-        User user=this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " Id ", userId));;
+        User user=this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found","Id",userId));
+        List<UserDetails> personalInformations=this.userDetailsRepo.findByUser(user);
+
+        UserDetails personalInformation;
+        if(personalInformations.get(0)==null) personalInformation=new UserDetails();
+        else  personalInformation=personalInformations.get(0);
+//        User user=this.userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", " Id ", userId));;
 //        UserDetails personalInformation = userDetailsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("PersonalInformation", "id", id));
 
         personalInformation.setUser(user);
@@ -110,4 +120,31 @@ public class UserDetailsController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/userPic/{userId}")
+    public ResponseEntity<Resource> getUserProfilePictureByUserId(@PathVariable int userId) {
+        Optional<User> user = userRepo.findById(userId);
+        if (user.isPresent()) {
+            List<UserDetails> userDetails =this.userDetailsRepo.findByUser(user.get());
+            UserDetails userDetail=userDetails.get(0);
+            if (userDetail != null && userDetail.getPicture() != null) {
+                System.out.println("Profile is send");
+                byte[] profilePicture = userDetail.getPicture();
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_JPEG); // Set the appropriate content type based on your file format
+
+                // Create a Resource object with the profile picture data
+                Resource resource = new ByteArrayResource(profilePicture);
+
+                return ResponseEntity.ok()
+                        .headers(headers)
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

@@ -285,7 +285,7 @@ public class VenueServiceImpl implements VenueService {
             else{
                 prevFood =new FoodorService();
                 prevFood.setServiceName(foodorService.getServiceName());
-                prevFood.setServiceCost(prevFood.getServiceCost());
+                prevFood.setServiceCost(foodorService.getServiceCost());
                 prevFood.setWhat(foodorService.getWhat());
                 prevFood.setVenue(venue);
             }
