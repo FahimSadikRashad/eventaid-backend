@@ -34,6 +34,8 @@ public interface VenueService {
 
     Booking createBooking(BookingRequest bookingRequest);
 
+    Booking updateBooking(BookingRequest bookingRequest,int bookId);
+
     List<Booking> getBookingByUser(int uid);
     Booking getBookingById(int bid);
 

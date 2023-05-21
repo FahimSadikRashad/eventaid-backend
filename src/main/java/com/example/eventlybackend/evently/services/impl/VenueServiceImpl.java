@@ -284,4 +284,13 @@ public class VenueServiceImpl implements VenueService {
 
         return this.modelMapper.map(savedVenue,VenueDto.class);
     }
+
+    @Override
+    public Booking updateBooking(BookingRequest bookingRequest, int bookId) {
+        Booking booking=this.bookingRepo.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Booking  not found","Id",bookId));
+        booking.setStatus(bookingRequest.getStatus());
+        Booking updatedBooking=this.bookingRepo.save(booking);
+
+        return  updatedBooking;
+    }
 }

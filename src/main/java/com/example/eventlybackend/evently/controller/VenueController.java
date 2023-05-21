@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @RestController
@@ -96,4 +97,8 @@ public class VenueController {
         return ResponseEntity.ok(this.venueService.getBookingByVenueId(vid));
     }
 
+    @PutMapping("/booking/{bid}")
+    public ResponseEntity<Booking> updateBookingStatus(@PathVariable("bid") int bid,@RequestBody BookingRequest bookingRequest){
+        return ResponseEntity.ok(this.venueService.updateBooking(bookingRequest,bid));
+    }
 }
