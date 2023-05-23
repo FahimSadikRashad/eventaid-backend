@@ -8,9 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface UserRepo extends JpaRepository<User,Integer> {
+/**
+ * Repository interface for managing User entities.
+ */
+public interface UserRepo extends JpaRepository<User, Integer> {
 
-//    @Query("select u from User u where u.name like :key")
-    User findUserByName( String userName);
-
+    /**
+     * Retrieves a User entity by name.
+     *
+     * @param userName The name of the user
+     * @return The User entity matching the name
+     */
+    User findUserByName(String userName);
 }
