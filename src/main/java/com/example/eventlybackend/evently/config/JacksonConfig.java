@@ -4,6 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
+/**
+
+ The {@code JacksonConfig} class is a configuration class for Jackson Object Mapper.
+
+ It defines a bean for customizing the Jackson2ObjectMapperBuilder.
+ */
+
 @Configuration
 public class JacksonConfig {
 

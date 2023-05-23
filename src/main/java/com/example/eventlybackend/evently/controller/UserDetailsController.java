@@ -19,6 +19,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+
+ The {@code UserDetailsController} class is a REST controller that handles
+
+ requests related to user details management.
+ */
 @RestController
     @RequestMapping("/api/userDetails")
 @CrossOrigin("http://localhost:3000")
@@ -29,28 +36,49 @@ public class UserDetailsController {
     @Autowired
     private UserRepo userRepo;
 
-    @GetMapping
-    public List<UserDetails> getAllPersonalInformation() {
-        return userDetailsRepo.findAll();
-    }
+    /**
 
+     Retrieves all personal information records.
+     @return A list of UserDetails.
+     */
+    @GetMapping
+    public List<UserDetails> getAllPersonalInformation() { return userDetailsRepo.findAll();}
+    /**
+
+     Retrieves a specific personal information record by ID.
+     @param id The ID of the personal information record to retrieve.
+     @return The UserDetails with the specified ID.
+     @throws ResourceNotFoundException if the personal information record is not found.
+     */
     @GetMapping("/{id}")
     public UserDetails getPersonalInformationById(@PathVariable("id") int id) {
         return userDetailsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("PersonalInformation", "id", id));
     }
 
+    /**
+
+     Creates a new personal information record.
+     @param personalInformation The UserDetails object to create.
+     @return The created UserDetails object.
+     */
     @PostMapping
     public UserDetails createPersonalInformation(@RequestBody UserDetails personalInformation) {
         return userDetailsRepo.save(personalInformation);
     }
-//    firstName: '',
-    // lastName: '',
-    // email: '',
-    // gender: '',
-    // phone: '',
-    // address: '',
-    // picture: null,
-    // userId: ''
+    /**
+
+     Uploads a file and updates the personal information record.
+     @param firstName The first name of the user.
+     @param lastName The last name of the user.
+     @param email The email of the user.
+     @param gender The gender of the user.
+     @param phone The phone number of the user.
+     @param address The address of the user.
+     @param userId The ID of the user.
+     @param file The file to upload.
+     @return The updated UserDetails object.
+     @throws IOException if there is an error processing the file.
+     */
     @PostMapping("/upload")
     public UserDetails uploadFile(@RequestParam("firstName") String firstName,
                                              @RequestParam("lastName") String lastName,
@@ -84,6 +112,14 @@ public class UserDetailsController {
 //        return ResponseEntity.ok("File uploaded successfully");
     }
 
+    /**
+
+     Updates an existing personal information record.
+     @param id The ID of the personal information record to update.
+     @param personalInformationDetails The updated UserDetails object.
+     @return The updated UserDetails object.
+     @throws ResourceNotFoundException if the personal information record is not found.
+     */
     @PutMapping("/{id}")
     public UserDetails updatePersonalInformation(@PathVariable("id") int id, @RequestBody UserDetails personalInformationDetails) {
         UserDetails personalInformation = userDetailsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("PersonalInformation", "id", id));
@@ -98,6 +134,13 @@ public class UserDetailsController {
         return userDetailsRepo.save(personalInformation);
     }
 
+    /**
+
+     Deletes a personal information record.
+     @param id The ID of the personal information record to delete.
+     @return A ResponseEntity with no content.
+     @throws ResourceNotFoundException if the personal information record is not found.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePersonalInformation(@PathVariable("id") int id) {
         UserDetails personalInformation = userDetailsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("PersonalInformation", "id", id));
@@ -105,6 +148,12 @@ public class UserDetailsController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+
+     Retrieves all personal information records associated with a user.
+     @param userId The ID of the user.
+     @return A ResponseEntity containing a list of UserDetails.
+     */
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<UserDetails>> getUserDetailsByUserId(@PathVariable int userId) {
         Optional<User> user = userRepo.findById(userId);
@@ -121,6 +170,14 @@ public class UserDetailsController {
         }
     }
 
+    /**
+
+     Retrieves the profile picture of a user.
+
+     @param userId The ID of the user.
+
+     @return A ResponseEntity containing the user's profile picture as a Resource.
+     */
     @GetMapping("/userPic/{userId}")
     public ResponseEntity<Resource> getUserProfilePictureByUserId(@PathVariable int userId) {
         Optional<User> user = userRepo.findById(userId);
