@@ -1,5 +1,13 @@
 package com.example.eventlybackend.evently.config;
 
+/**
+
+ The {@code AppConstants} class holds the constant values used in the application.
+
+ These constants are used for defining default page settings, sorting criteria,
+
+ and user types.
+ */
 public class AppConstants {
 
     public static final String PAGE_NUMBER = "0";
