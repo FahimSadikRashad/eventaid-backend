@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
+
+/**
+ * The FoodorService class represents a food or service offered at a venue.
+ */
 @Entity
 @Table(name = "foods")
 @Getter
@@ -30,6 +34,14 @@ public class FoodorService {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
+
+    /**
+     * Constructs a FoodorService object with the specified name, price, and venue.
+     *
+     * @param name  the name of the food or service
+     * @param price the cost of the food or service
+     * @param venue the venue where the food or service is offered
+     */
 //    @ManyToMany
 //    private Set<Booking> bookings;
     public FoodorService(String name, int price, Venue venue) {

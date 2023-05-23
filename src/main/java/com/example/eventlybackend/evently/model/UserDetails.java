@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The UserDetails class represents additional details of a user.
+ */
 @Entity
 @Table(name = "userDetails")
 @Getter
@@ -29,6 +32,18 @@ public class UserDetails {
     @Lob
     private byte[] picture;
 
+    /**
+     * Constructs a UserDetails object with the specified user, firstname, lastname, email, gender, phone, address, and picture.
+     *
+     * @param user      the associated user
+     * @param firstname the firstname of the user
+     * @param lastname  the lastname of the user
+     * @param email     the email address of the user
+     * @param gender    the gender of the user
+     * @param phone     the phone number of the user
+     * @param address   the address of the user
+     * @param picture   the profile picture of the user
+     */
     public UserDetails  (User user, String firstname, String lastname, String email, String gender, String phone, String address, byte[] picture) {
         this.user = user;
         this.firstname = firstname;

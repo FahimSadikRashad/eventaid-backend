@@ -10,6 +10,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The User class represents a user in the system.
+ */
 @Entity
 @Table(name = "Users")
 @Getter

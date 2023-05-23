@@ -12,6 +12,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Venue class represents a venue entity.
+ */
 @Entity
 @Table(name = "venues")
 @Getter
@@ -45,6 +48,14 @@ public class Venue {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    /**
+     * Constructs a Venue object with the specified name, place, and contact.
+     *
+     * @param name    the name of the venue
+     * @param place   the place where the venue is located
+     * @param contact the contact information of the venue
+     */
     public Venue(String name, String place, String contact) {
         this.venueName = name;
         this.place = place;

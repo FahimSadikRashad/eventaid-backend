@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * The Booking class represents a booking made by a user for a venue and event.
+ */
 @Entity
 @Table(name = "bookings")
 @Getter

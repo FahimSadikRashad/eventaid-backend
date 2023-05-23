@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Event class represents an event that can be hosted at a venue.
+ */
 @Entity
 @Table(name = "events")
 @Getter
@@ -25,6 +28,14 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venue_id", nullable = false)
     private Venue venue;
+
+    /**
+     * Constructs an Event object with the specified name, price, and venue.
+     *
+     * @param name  the name of the event
+     * @param price the cost of the event
+     * @param venue the venue where the event will be hosted
+     */
 
     public Event(String name, int price, Venue venue) {
         this.eventName = name;
