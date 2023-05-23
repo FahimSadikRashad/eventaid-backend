@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * The VenueRequest class represents the request object for creating a new venue.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

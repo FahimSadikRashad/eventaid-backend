@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The VenueDto class represents the data transfer object for venue information.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

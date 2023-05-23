@@ -11,6 +11,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The UserDto class represents the data transfer object for user information.
+ */
 @Getter
 @Setter
 public class UserDto {

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The PersonalInfoDto class represents the data transfer object for personal information.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
